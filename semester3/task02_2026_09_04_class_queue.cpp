@@ -5,16 +5,24 @@
 #define QUEUE_FULL 1
 
 
-struct Node
-{
-    int value;
-    Node* next;
+
+enum human {
+    none,
+    child,
+    teenager,
+    adult,
+    old
 };
 
 
 class Queue
 {
 private:
+    struct Node
+    {
+        human value;
+        Node* next;
+    };
     bool extendable;
     int size;
     int max_size;
@@ -24,8 +32,8 @@ public:
     Queue();
     Queue(int max_size);
     bool is_full();
-    int push(int value);
-    int top(int& value, bool do_pop);
+    int push(human value);
+    int top(human& value, bool do_pop);
     bool is_empty();
     void clear(bool fill_zeros);
     int get_size();
@@ -55,7 +63,7 @@ bool Queue::is_full() {
 }
 
 
-int Queue::push(int value) {
+int Queue::push(human value) {
     if (!extendable && is_full()) {
         std::cout << "Queue is full." << "\n";
         return QUEUE_FULL;
@@ -75,7 +83,7 @@ int Queue::push(int value) {
 }
 
 
-int Queue::top(int& value, bool do_pop = false) {
+int Queue::top(human& value, bool do_pop = false) {
     if (start == nullptr) {
         return ERROR;
     }
@@ -104,7 +112,7 @@ void Queue::clear(bool fill_zeros = false) {
     while (current) {
         next = current->next;
         if (fill_zeros) {
-            current->value = '0';
+            current->value = none;
         } else {
             delete current;
         }
@@ -122,9 +130,37 @@ int Queue::get_size() {
 }
 
 
+
+enum human get_human(int index) {
+    human local_human;
+    switch (index)
+    {
+    case 0:
+        local_human = none;
+        break;
+    case 1:
+        local_human = child;
+        break;
+    case 2:
+        local_human = teenager;
+        break;
+    case 3:
+        local_human = adult;
+        break;
+    case 4:
+        local_human = old;
+        break;
+    default:
+        break;
+    }
+    return local_human;
+}
+
+
 int main() {
     int command;
-    int value;
+    int index;
+    human value;
     int max_size;
     Queue* queue;
     std::cout << "Enter maximum size of queue (0 for unlimited): ";
@@ -134,11 +170,24 @@ int main() {
     } else {
         queue = new Queue(max_size);
     }
+    for (int i = 0; i < 100; i++) {
+        queue->push(get_human(i & 4));
+        std::cout << "Value to push: " << i % 4 << "\n";
+    }
+    for (int i = 0; i < 100; i++) {
+        if (queue->is_empty()) {
+            std::cout << "Queue is empty" << "\n";
+        } else {
+            queue->top(value, true);
+            std::cout << "Popped value: " << value << "\n";
+        }
+    }
     do {
         std::cin >> command;
         switch (command) {
             case 1:
-                std::cin >> value;
+                std::cin >> index;
+                value = get_human(index);
                 queue->push(value);
                 break;
             case 2:

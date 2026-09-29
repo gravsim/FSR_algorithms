@@ -5,7 +5,17 @@
 #define QUEUE_FULL 1
 
 
-class Queue
+
+enum citizenship {
+    none,
+    child,
+    teenager,
+    adult,
+    old
+};
+
+
+class Citizen
 {
 private:
     bool extendable;
