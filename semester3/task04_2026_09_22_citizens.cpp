@@ -6,164 +6,59 @@
 
 
 
-enum citizenship {
-    none,
-    child,
-    teenager,
-    adult,
-    old
+enum school {
+    None,
+    Faculty_of_Space_Research,
+    Faculty_of_Mechanics_and_Mathematics,
+    Faculty_of_Computational_Mathematics_and_Cybernetics,
+    Faculty_of_Physics,
+    Faculty_of_Chemistry,
+    Faculty_of_Biology,
+    Faculty_of_Geology
 };
 
 
-class Citizen
+enum day_of_the_week {
+    day_off,
+    school_day,
+    holyday
+};
+
+
+class MSU_student
 {
 private:
-    bool extendable;
-    int size;
-    int max_size;
-    int* values;
-    int start;
-    int end;
+    static float scholarship;
+    static day_of_the_week current_day;
+    school school;
+    float average_grade;
 public:
-    Queue();
-    Queue(int max_size);
-    Queue(Queue& queue);
-    Queue(Queue&& queue);
-    ~Queue();
-    int norm_index(int index);
-    bool is_full();
-    void expand();
-    int push(int value);
-    int top(int& value, bool do_pop);
-    bool is_empty();
-    void clear(bool fill_zeros);
-    int get_size();
+    MSU_student();
+    MSU_student(enum school school, float average_grade);
+    static void rise_scholarship(float addition);
+    static void set_day_of_week(enum day_of_the_week current_day);
 };
 
+float MSU_student::scholarship;
 
-Queue::Queue() {
-    extendable = true;
-    this->max_size = 1;
-    values = new int[1];
-    size = 0;
-    start = 0;
-    end = 0;
+
+MSU_student::MSU_student() {
+    this->school = None;
+    this->average_grade = 0;
 }
 
 
-Queue::Queue(int max_size) {
-    extendable = false;
-    this->max_size = max_size;
-    values = new int[max_size];
-    size = 0;
-    start = 0;
-    end = 0;
+MSU_student::MSU_student(enum school school, float average_grade) {
+    this->school = school;
+    this->average_grade = average_grade;
 }
 
-
-Queue::Queue(Queue& queue) {
-    extendable = queue.extendable;
-    max_size = queue.max_size;
-    values = new int[max_size];
-    size = queue.size;
-    start = 0;
-    end = queue.end - queue.start;
-    for (int i = start; i < end; i++) {
-        values[i] = queue.values[norm_index(queue.start + i)];
-    }
+void MSU_student::rise_scholarship(float addition) {
+    scholarship += addition;
 }
 
-
-Queue::Queue(Queue&& queue) {
-    extendable = queue.extendable;
-    max_size = queue.max_size;
-    values = queue.values;
-    size = queue.size;
-    start = queue.start;
-    end = queue.end;
-
-    queue.extendable = true;
-    queue.max_size = 0;
-    queue.values = nullptr;
-    queue.size = 0;
-    queue.start = 0;
-    queue.end = 0;
-}
-
-
-Queue::~Queue() {
-    delete[] values;
-}
-
-
-int Queue::norm_index(int index) {
-    return index % max_size;
-}
-
-
-bool Queue::is_full() {
-    return size == max_size;
-}
-
-
-void Queue::expand() {
-    max_size *= 2;
-    int* new_values = new int[max_size];
-    start = 0;
-    end = end - start;
-    for (int i = start; i < end; i++) {
-        new_values[i] = values[norm_index(start + i)];
-    }
-    delete[] values;
-    values = new_values;
-}
-
-
-int Queue::push(int value) {
-    if (!extendable && is_full()) {
-        std::cout << "Queue is full." << "\n";
-        return QUEUE_FULL;
-    }
-    if (is_full()) {
-        expand();
-    }
-    values[norm_index(end)] = value;
-    end++;
-    size++;
-    return 0;
-}
-
-
-int Queue::top(int& value, bool do_pop = false) {
-    value = values[norm_index(start)];
-    if (do_pop) {
-        start++;
-        size--;
-    }
-    return 0;
-}
-
-
-bool Queue::is_empty() {
-    return size == 0;
-}
-
-
-void Queue::clear(bool fill_zeros = false) {
-    if (fill_zeros) {
-        for (int i = start; i < end; i++) {
-            values[norm_index(i)] = 0;
-        }
-    } else {
-        start = 0;
-        end = 0;
-        size = 0;
-    }
-}
-
-
-int Queue::get_size() {
-    return size;
+void MSU_student::set_day_of_week(day_of_the_week new_current_day) {
+    current_day = new_current_day;
 }
 
 
@@ -173,7 +68,8 @@ int main() {
     int max_size;
     std::cout << "Enter maximum size of queue (0 for unlimited): ";
     std::cin >> max_size;
-    Queue queue = max_size == 0 ? Queue() : Queue(max_size);
+    MSU_student students[10];
+
     do {
         std::cin >> command;
         switch (command) {
