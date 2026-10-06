@@ -1,10 +1,5 @@
 #include <iostream>
 
-#define SUCCESS 0
-#define ERROR (-1)
-#define QUEUE_FULL 1
-
-
 
 enum school_type {
     None,
@@ -29,7 +24,6 @@ school_type get_school(int school_index);
 day_of_the_week_type get_day_of_the_week(int day_of_the_week_index);
 
 
-
 class MSU_student
 {
 private:
@@ -52,6 +46,3 @@ public:
     void update_grades(float new_grades);
 };
 
-
-unsigned int MSU_student::scholarship = 0;
-day_of_the_week_type MSU_student::current_day = day_off;
