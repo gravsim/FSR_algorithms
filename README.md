@@ -3,11 +3,11 @@
 ### Алгоритмы и структуры данных | Алгоритмы алгебры. Решения задач на языке C, C++. Факультет Космических Исследований МГУ. 2025-2027.
 
 
-Консольная команда для компиляции с нужными флагами:
-
+Консольные команды для компиляции с нужными флагами:
+### C
 gcc my_file.c -Wall -Werror -Wformat-security -Wignored-qualifiers -Winit-self -Wswitch-default  -Wfloat-equal -Wshadow -Wpointer-arith -Wtype-limits -Wempty-body -Wlogical-op  -Wstrict-prototypes -Wold-style-declaration -Wold-style-definition -Wmissing-parameter-type -Wmissing-field-initializers -Wnested-externs -Wno-pointer-sign -std=gnu99
-
-
+### C++
+g++ lib.hpp lib.cpp main.cpp -o main.out
 
 ## Ссылки на сайты
 
