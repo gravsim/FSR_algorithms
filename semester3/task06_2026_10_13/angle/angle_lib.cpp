@@ -2,15 +2,15 @@
 # define PI 3.1415926535897932
 
 
-Angle::Angle(double degree) {
-    this->degree = degree;
-    this->radians = degree / 180 * PI;
-}
-
-
 Angle::Angle() {
     this->degree = 0;
     this->radians = 0;
+}
+
+
+Angle::Angle(double degree) {
+    this->degree = degree;
+    this->radians = degree / 180 * PI;
 }
 
 
@@ -23,6 +23,7 @@ const double Angle::get_radians() {
     return radians;
 }
 
+
 void Angle::set_degree(double deg) {
     this->degree = deg;
     this->radians = deg / 180 * PI;
@@ -33,7 +34,6 @@ void Angle::set_radians(double rad) {
     this->degree = rad / PI * 180;
     this->radians = rad;
 }
-
 
 
 Angle Angle::operator+(Angle angle) {
@@ -49,6 +49,7 @@ Angle Angle::operator-(Angle angle) {
 Angle Angle::operator*(double coefficient) {
     return Angle(degree * coefficient);
 }
+
 
 Angle Angle::operator/(double coefficient) {
     return Angle(degree / coefficient);
@@ -75,6 +76,7 @@ Angle Angle::operator*=(double coefficient) {
     return *this;
 }
 
+
 Angle Angle::operator/=(double coefficient) {
     degree /= coefficient;
     radians /= coefficient;
@@ -88,15 +90,34 @@ Angle Angle::operator++() {
     return *this;
 }
 
+
 Angle Angle::operator--() {
     degree--;
     radians -= PI / 180;
     return *this;
 }
 
-std::ostream& operator<<(std::ostream& out, Angle angle) {
-    std::cout << "Degree: "<< angle.get_degree() << "\n";
+
+Angle::operator double() {
+    return degree;
 }
-std::istream& operator>>(std::istream& in, Angle angle) {
-    std::cout << "Degree: "<< angle.get_degree() << "\n";
+
+
+Angle::operator int() {
+    return (int)degree;
+}
+
+
+
+std::ostream& operator<<(std::ostream& out, Angle& angle) {
+    out << "Degree: " << angle.degree << " Radians: " << angle.radians << "\n";
+    return out;
+}
+
+
+std::istream& operator>>(std::istream& in, Angle& angle) {
+    double deg;
+    in >> deg;
+    angle.set_degree(deg);
+    return in;
 }

@@ -8,8 +8,8 @@ private:
     double radians;
 
 public:
-    Angle(double degree);
     Angle();
+    Angle(double degree);
     const double get_degree();
     const double get_radians();
     void set_degree(double deg);
@@ -25,9 +25,10 @@ public:
     Angle operator/=(double coefficient);
     Angle operator++();
     Angle operator--();
+    friend std::ostream& operator<<(std::ostream& out, Angle& angle);
+    friend std::istream& operator>>(std::istream& in, Angle& angle);
 
+    operator double();
+    operator int();
 };
-
-std::ostream& operator<<(std::ostream& out, Angle angle);
-std::istream& operator>>(std::istream& in, Angle angle);
 
