@@ -1,32 +1,40 @@
 #include <iostream>
 
 
-class Angle
+class Vec2
 {
 private:
-    double degree;
-    double radians;
+    double x;
+    double y;
 
 public:
-    Angle();
-    Angle(double degree);
-    const double get_degree();
-    const double get_radians();
-    void set_degree(double deg);
-    void set_radians(double rad);
+    Vec2();
+    Vec2(double x, double y);
+    const double get_x();
+    const double get_y();
+    const double get_norm();
+    void set_x(double x0);
+    void set_y(double y0);
 
-    Angle operator+(Angle angle);
-    Angle operator-(Angle angle);
-    Angle operator*(double coefficient);
-    Angle operator/(double coefficient);
-    Angle operator+=(Angle angle);
-    Angle operator-=(Angle angle);
-    Angle operator*=(double coefficient);
-    Angle operator/=(double coefficient);
-    Angle operator++();
-    Angle operator--();
-    friend std::ostream& operator<<(std::ostream& out, Angle& angle);
-    friend std::istream& operator>>(std::istream& in, Angle& angle);
+    Vec2& operator=(Vec2 vec);
+    Vec2 operator+(Vec2 vec);
+    Vec2 operator-(Vec2 vec);
+    Vec2 operator-();
+    Vec2 operator*(double coefficient);
+    Vec2 operator/(double coefficient);
+
+
+    Vec2 operator+=(Vec2 vec);
+    Vec2 operator-=(Vec2 vec);
+    Vec2 operator*=(double coefficient);
+    Vec2 operator/=(double coefficient);
+    Vec2 operator++();
+    Vec2 operator--();
+    bool operator==(Vec2 vec);
+    bool operator<=(Vec2 vec);
+    bool operator>=(Vec2 vec);
+    friend std::ostream& operator<<(std::ostream& out, Vec2& vec);
+    friend std::istream& operator>>(std::istream& in, Vec2& vec);
 
     operator double();
     operator int();

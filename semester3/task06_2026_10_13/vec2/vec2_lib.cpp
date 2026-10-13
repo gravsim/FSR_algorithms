@@ -1,123 +1,164 @@
-#include "angle_lib.hpp"
-# define PI 3.1415926535897932
+#include "vec2_lib.hpp"
+#define PI 3.1415926535897932
+#define PRECISION 1e-10
+#include <math.h>
 
 
-Angle::Angle() {
-    this->degree = 0;
-    this->radians = 0;
+Vec2::Vec2() {
+    this->x = 0;
+    this->y = 0;
 }
 
 
-Angle::Angle(double degree) {
-    this->degree = degree;
-    this->radians = degree / 180 * PI;
+Vec2::Vec2(double x, double y) {
+    this->x = x;
+    this->y = y;
 }
 
 
-const double Angle::get_degree() {
-    return degree;
+const double Vec2::get_x() {
+    return x;
 }
 
 
-const double Angle::get_radians() {
-    return radians;
+const double Vec2::get_y() {
+    return y;
 }
 
 
-void Angle::set_degree(double deg) {
-    this->degree = deg;
-    this->radians = deg / 180 * PI;
+const double Vec2::get_norm() {
+    return sqrt(x * x + y * y);
 }
 
 
-void Angle::set_radians(double rad) {
-    this->degree = rad / PI * 180;
-    this->radians = rad;
+void Vec2::set_x(double x0) {
+    this->x = x0;
+
 }
 
 
-Angle Angle::operator+(Angle angle) {
-    return Angle(degree + angle.degree);
+void Vec2::set_y(double y0) {
+    this->y = y0;
 }
 
 
-Angle Angle::operator-(Angle angle) {
-    return Angle(degree - angle.degree);
-}
-
-
-Angle Angle::operator*(double coefficient) {
-    return Angle(degree * coefficient);
-}
-
-
-Angle Angle::operator/(double coefficient) {
-    return Angle(degree / coefficient);
-}
-
-
-Angle Angle::operator+=(Angle angle) {
-    degree += angle.degree;
-    radians += angle.radians;
+Vec2& Vec2::operator=(Vec2 vec) {
+    x = vec.x;
+    y = vec.y;
     return *this;
 }
 
 
-Angle Angle::operator-=(Angle angle) {
-    degree -= angle.degree;
-    radians -= angle.radians;
+Vec2 Vec2::operator+(Vec2 vec) {
+    return Vec2(x + vec.x, y + vec.y);
+}
+
+
+Vec2 Vec2::operator-(Vec2 vec) {
+    return Vec2(x - vec.x, y - vec.y);
+}
+
+
+Vec2 Vec2::operator-() {
+    return Vec2(-x, -y);
+}
+
+
+Vec2 Vec2::operator*(double coefficient) {
+    return Vec2(x * coefficient, y * coefficient);
+}
+
+
+Vec2 Vec2::operator/(double coefficient) {
+    return Vec2(x / coefficient, y / coefficient);
+}
+
+
+Vec2 Vec2::operator+=(Vec2 vec) {
+    x += vec.x;
+    y += vec.y;
     return *this;
 }
 
 
-Angle Angle::operator*=(double coefficient) {
-    degree *= coefficient;
-    radians *= coefficient;
+Vec2 Vec2::operator-=(Vec2 vec) {
+    x -= vec.x;
+    y -= vec.y;
     return *this;
 }
 
 
-Angle Angle::operator/=(double coefficient) {
-    degree /= coefficient;
-    radians /= coefficient;
+Vec2 Vec2::operator*=(double coefficient) {
+    x *= coefficient;
+    y *= coefficient;
     return *this;
 }
 
 
-Angle Angle::operator++() {
-    degree++;
-    radians += PI / 180;
+Vec2 Vec2::operator/=(double coefficient) {
+    x /= coefficient;
+    y /= coefficient;
     return *this;
 }
 
 
-Angle Angle::operator--() {
-    degree--;
-    radians -= PI / 180;
+Vec2 Vec2::operator++() {
+    x++;
+    y++;
     return *this;
 }
 
 
-Angle::operator double() {
-    return degree;
+Vec2 Vec2::operator--() {
+    x--;
+    y--;
+    return *this;
 }
 
 
-Angle::operator int() {
-    return (int)degree;
+bool Vec2::operator==(Vec2 vec) {
+    return fabs(x - vec.x) < PRECISION && fabs(y - vec.y) < PRECISION;
 }
 
 
+bool Vec2::operator<=(Vec2 vec) {
+    if (x != vec.x) {
+        return x < vec.x;
+    }
+    if (y != vec.y) {
+        return y < vec.y;
+    }
+    return false;
+}
 
-std::ostream& operator<<(std::ostream& out, Angle& angle) {
-    out << "Degree: " << angle.degree << " Radians: " << angle.radians << "\n";
+
+bool Vec2::operator>=(Vec2 vec) {
+    if (x != vec.x) {
+        return x > vec.x;
+    }
+    if (y != vec.y) {
+        return y > vec.y;
+    }
+    return false;
+}
+
+
+Vec2::operator double() {
+    return get_norm();
+}
+
+
+Vec2::operator int() {
+    return (int)get_norm();
+}
+
+
+std::ostream& operator<<(std::ostream& out, Vec2& vec) {
+    out << "Vec2: (" << vec.x << ", " << vec.y << ")\n";
     return out;
 }
 
 
-std::istream& operator>>(std::istream& in, Angle& angle) {
-    double deg;
-    in >> deg;
-    angle.set_degree(deg);
-    return in;
+std::istream& operator>>(std::istream& in, Vec2& vec) {
+    return in >> vec.x >> vec.y;
 }
