@@ -1,5 +1,12 @@
 #include "angle_lib.hpp"
+#include <cmath>
 # define PI 3.1415926535897932
+#define PRECISION 1e-15
+
+
+bool double_equal(double a, double b) {
+    return fabs(a - b) <= PRECISION;
+}
 
 
 Angle::Angle() {
@@ -14,12 +21,12 @@ Angle::Angle(double degree) {
 }
 
 
-const double Angle::get_degree() {
+double Angle::get_degree() const{
     return degree;
 }
 
 
-const double Angle::get_radians() {
+double Angle::get_radians() const{
     return radians;
 }
 
@@ -36,77 +43,115 @@ void Angle::set_radians(double rad) {
 }
 
 
-Angle Angle::operator+(Angle angle) {
+Angle Angle::operator+(Angle angle) const{
     return Angle(degree + angle.degree);
 }
 
 
-Angle Angle::operator-(Angle angle) {
+Angle Angle::operator-(Angle angle) const {
     return Angle(degree - angle.degree);
 }
 
 
-Angle Angle::operator*(double coefficient) {
+Angle Angle::operator*(double coefficient) const {
     return Angle(degree * coefficient);
 }
 
 
-Angle Angle::operator/(double coefficient) {
+Angle Angle::operator/(double coefficient) const {
     return Angle(degree / coefficient);
 }
 
 
-Angle Angle::operator+=(Angle angle) {
+const Angle Angle::operator+=(Angle angle) {
     degree += angle.degree;
     radians += angle.radians;
     return *this;
 }
 
 
-Angle Angle::operator-=(Angle angle) {
+const Angle Angle::operator-=(Angle angle) {
     degree -= angle.degree;
     radians -= angle.radians;
     return *this;
 }
 
 
-Angle Angle::operator*=(double coefficient) {
+const Angle Angle::operator*=(double coefficient) {
     degree *= coefficient;
     radians *= coefficient;
     return *this;
 }
 
 
-Angle Angle::operator/=(double coefficient) {
+const Angle Angle::operator/=(double coefficient) {
     degree /= coefficient;
     radians /= coefficient;
     return *this;
 }
 
 
-Angle Angle::operator++() {
+bool Angle::operator==(Angle angle) const {
+    return double_equal(degree, angle.degree);
+}
+
+
+bool Angle::operator<=(Angle angle) const {
+    return degree <= angle.degree - PRECISION;
+}
+
+
+bool Angle::operator>=(Angle angle) const {
+    return degree >= angle.degree + PRECISION;
+}
+
+
+bool Angle::operator<(Angle angle) const {
+    return degree < angle.degree - PRECISION;
+}
+
+
+bool Angle::operator>(Angle angle) const {
+    return degree > angle.degree + PRECISION;
+}
+
+
+const Angle Angle::operator++() {
     degree++;
     radians += PI / 180;
     return *this;
 }
 
 
-Angle Angle::operator--() {
+const Angle Angle::operator++(int) {
+    degree++;
+    radians += PI / 180;
+    return *this;
+}
+
+
+const Angle Angle::operator--() {
     degree--;
     radians -= PI / 180;
     return *this;
 }
 
 
-Angle::operator double() {
+const Angle Angle::operator--(int) {
+    degree--;
+    radians -= PI / 180;
+    return *this;
+}
+
+
+Angle::operator double() const {
     return degree;
 }
 
 
-Angle::operator int() {
+Angle::operator int() const {
     return (int)degree;
 }
-
 
 
 std::ostream& operator<<(std::ostream& out, Angle& angle) {

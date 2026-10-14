@@ -10,25 +10,32 @@ private:
 public:
     Angle();
     Angle(double degree);
-    const double get_degree();
-    const double get_radians();
+    double get_degree() const;
+    double get_radians() const;
     void set_degree(double deg);
     void set_radians(double rad);
 
-    Angle operator+(Angle angle);
-    Angle operator-(Angle angle);
-    Angle operator*(double coefficient);
-    Angle operator/(double coefficient);
-    Angle operator+=(Angle angle);
-    Angle operator-=(Angle angle);
-    Angle operator*=(double coefficient);
-    Angle operator/=(double coefficient);
-    Angle operator++();
-    Angle operator--();
+    Angle operator+(Angle angle) const;
+    Angle operator-(Angle angle) const;
+    Angle operator*(double coefficient) const;
+    Angle operator/(double coefficient) const;
+    const Angle operator+=(Angle angle);
+    const Angle operator-=(Angle angle);
+    const Angle operator*=(double coefficient);
+    const Angle operator/=(double coefficient);
+    bool operator==(Angle angle) const;
+    bool operator<=(Angle angle) const;
+    bool operator>=(Angle angle) const;
+    bool operator<(Angle angle) const;
+    bool operator>(Angle angle) const;
+    const Angle operator++();
+    const Angle operator++(int);
+    const Angle operator--();
+    const Angle operator--(int);
     friend std::ostream& operator<<(std::ostream& out, Angle& angle);
     friend std::istream& operator>>(std::istream& in, Angle& angle);
 
-    operator double();
-    operator int();
+    operator double() const;
+    operator int() const;
 };
 

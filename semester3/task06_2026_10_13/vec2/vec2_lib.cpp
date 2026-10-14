@@ -1,7 +1,32 @@
 #include "vec2_lib.hpp"
+#include <cmath>
 #define PI 3.1415926535897932
-#define PRECISION 1e-10
-#include <math.h>
+#define PRECISION 1e-15
+
+
+// const fun() {}
+// means that the return parameter is const,
+// use if you return a reference or a pointer
+//
+// fun() const {}
+// means that the function is part of a class and
+// cant change any members of that class
+
+
+bool double_equal(double a, double b) {
+    return fabs(a - b) <= PRECISION;
+}
+
+
+int int_sign(double a) {
+    if (a < -PRECISION) {
+        return -1;
+    }
+    if (a > PRECISION) {
+        return 1;
+    }
+    return 0;
+}
 
 
 Vec2::Vec2() {
@@ -16,24 +41,23 @@ Vec2::Vec2(double x, double y) {
 }
 
 
-const double Vec2::get_x() {
+double Vec2::get_x() const {
     return x;
 }
 
 
-const double Vec2::get_y() {
+double Vec2::get_y() const {
     return y;
 }
 
 
-const double Vec2::get_norm() {
+double Vec2::get_norm() const {
     return sqrt(x * x + y * y);
 }
 
 
 void Vec2::set_x(double x0) {
     this->x = x0;
-
 }
 
 
@@ -49,27 +73,27 @@ Vec2& Vec2::operator=(Vec2 vec) {
 }
 
 
-Vec2 Vec2::operator+(Vec2 vec) {
+Vec2 Vec2::operator+(Vec2 vec) const {
     return Vec2(x + vec.x, y + vec.y);
 }
 
 
-Vec2 Vec2::operator-(Vec2 vec) {
+Vec2 Vec2::operator-(Vec2 vec) const {
     return Vec2(x - vec.x, y - vec.y);
 }
 
 
-Vec2 Vec2::operator-() {
+Vec2 Vec2::operator-() const {
     return Vec2(-x, -y);
 }
 
 
-Vec2 Vec2::operator*(double coefficient) {
+Vec2 Vec2::operator*(double coefficient) const {
     return Vec2(x * coefficient, y * coefficient);
 }
 
 
-Vec2 Vec2::operator/(double coefficient) {
+Vec2 Vec2::operator/(double coefficient) const {
     return Vec2(x / coefficient, y / coefficient);
 }
 
@@ -109,6 +133,13 @@ Vec2 Vec2::operator++() {
 }
 
 
+Vec2 Vec2::operator++(int) {
+    x++;
+    y++;
+    return *this;
+}
+
+
 Vec2 Vec2::operator--() {
     x--;
     y--;
@@ -116,49 +147,111 @@ Vec2 Vec2::operator--() {
 }
 
 
-bool Vec2::operator==(Vec2 vec) {
-    return fabs(x - vec.x) < PRECISION && fabs(y - vec.y) < PRECISION;
+Vec2 Vec2::operator--(int) {
+    x--;
+    y--;
+    return *this;
 }
 
 
-bool Vec2::operator<=(Vec2 vec) {
-    if (x != vec.x) {
+bool Vec2::operator==(Vec2 vec) const {
+    return double_equal(x, vec.x) && double_equal(y, vec.y);
+}
+
+
+bool Vec2::operator<=(Vec2 vec) const {
+    if (!double_equal(x, vec.x)) {
+        return x <= vec.x;
+    }
+    if (!double_equal(y, vec.y)) {
+        return y <= vec.y;
+    }
+    return false;
+}
+
+
+bool Vec2::operator>=(Vec2 vec) const {
+    if (!double_equal(x, vec.x)) {
+        return x >= vec.x;
+    }
+    if (!double_equal(y, vec.y)) {
+        return y >= vec.y;
+    }
+    return false;
+}
+
+
+bool Vec2::operator<(Vec2 vec) const {
+    if (!double_equal(x, vec.x)) {
         return x < vec.x;
     }
-    if (y != vec.y) {
+    if (!double_equal(y, vec.y)) {
         return y < vec.y;
     }
     return false;
 }
 
 
-bool Vec2::operator>=(Vec2 vec) {
-    if (x != vec.x) {
+bool Vec2::operator>(Vec2 vec) const {
+    if (!double_equal(x, vec.x)) {
         return x > vec.x;
     }
-    if (y != vec.y) {
+    if (!double_equal(y, vec.y)) {
         return y > vec.y;
     }
     return false;
 }
 
 
-Vec2::operator double() {
+Vec2::operator double() const {
     return get_norm();
 }
 
 
-Vec2::operator int() {
+Vec2::operator int() const {
     return (int)get_norm();
 }
 
 
-std::ostream& operator<<(std::ostream& out, Vec2& vec) {
-    out << "Vec2: (" << vec.x << ", " << vec.y << ")\n";
+std::ostream& operator<<(std::ostream& out, const Vec2& vec) {
+    out << "(" << vec.x << ", " << vec.y << ") ";
     return out;
 }
 
 
 std::istream& operator>>(std::istream& in, Vec2& vec) {
     return in >> vec.x >> vec.y;
+}
+
+
+Vec2 Vec2::normalized() const {
+    return Vec2(x / this->get_norm(), y / this->get_norm());
+}
+
+
+double distance(Vec2 a, Vec2 b) {
+    return (a - b).get_norm();
+}
+
+
+double cross2(Vec2 a, Vec2 b) {
+    return a.x * b.y - a.y * b.x;
+}
+
+
+double dot(Vec2 a, Vec2 b) {
+    return a.x * b.x + a.y * b.y;
+}
+
+
+int vectors_sign(Vec2 point, Vec2 start, Vec2 end) {
+    Vec2 edge = end - start;
+    Vec2 diff = point - start;
+    int result = int_sign(cross2(edge, diff));
+    return result;
+}
+
+
+double get_cos(Vec2 a, Vec2 b) {
+    return dot(a.normalized(), b.normalized());
 }
