@@ -1,10 +1,5 @@
 #include <iostream>
-
-#define SUCCESS 0
-#define ERROR (-1)
-#define QUEUE_FULL 1
-
-
+#define COEFFICIENT 200
 
 enum school_type {
     None,
@@ -18,14 +13,19 @@ enum school_type {
 };
 
 
-enum day_of_the_week_type {
-    day_off,
-    school_day,
-    holiday
+enum day {
+    none,
+    sunday,
+    monday,
+    tuesday,
+    wednesday,
+    thursday,
+    friday,
+    saturday
 };
 
 
-school_type get_school(int school_index) {
+school_type get_school_enum(int school_index) {
     school_type result;
     switch (school_index) {
         case 0:
@@ -60,20 +60,35 @@ school_type get_school(int school_index) {
 }
 
 
-day_of_the_week_type get_day_of_the_week(int day_of_the_week_index) {
-    day_of_the_week_type result;
-    switch (day_of_the_week_index) {
+day get_day(int day_index) {
+    day result;
+    switch (day_index) {
         case 0:
-            result = day_off;
+            result = none;
             break;
         case 1:
-            result = school_day;
+            result = sunday;
             break;
         case 2:
-            result = holiday;
+            result = monday;
+            break;
+        case 3:
+            result = tuesday;
+            break;
+        case 4:
+            result = wednesday;
+            break;
+        case 5:
+            result = thursday;
+            break;
+        case 6:
+            result = friday;
+            break;
+        case 7:
+            result = saturday;
             break;
         default:
-            result = holiday;
+            result = none;
             break;
     }
     return result;
@@ -84,47 +99,74 @@ class MSU_student
 {
 private:
     static unsigned int scholarship;
-    static day_of_the_week_type current_day;
+    static day current_day;
+    day day_off;
     school_type school;
-    float average_grade;
+    double average_grade;
+    double income;
 public:
     MSU_student();
-    MSU_student(school_type school, float average_grade);
-    const school_type get_student_school();
-    const float get_average_grade();
+    MSU_student(
+        school_type school,
+        double average_grade,
+        day day_off,
+        double income
+    );
+    void set_school(int school_index);
+    school_type get_school() const;
 
-    static void rise_scholarship( unsigned int addition);
+    double get_average_grade() const;
+    void study();
+
+    void set_income(double new_income);
+    double get_income();
+
+    void set_day_off(int new_day_off);
+    day get_day_off();
+
+    double get_profit();
+
+    static void rise_scholarship(unsigned int addition);
+    static double get_scholarship();
+
     static void set_current_day(int current_day);
-    static float get_scholarship();
-    static day_of_the_week_type get_current_day();
+    static day get_current_day();
 
-    void change_school(int school_index);
-    void update_grades(float new_grades);
+
+
 };
 
 
- unsigned int MSU_student::scholarship = 0;
-day_of_the_week_type MSU_student::current_day = day_off;
+unsigned int MSU_student::scholarship = 0;
+day MSU_student::current_day = none;
 
 
 MSU_student::MSU_student() {
     this->school = None;
     this->average_grade = 0;
+    this->day_off = none;
+    this->income = 0;
 }
 
 
-MSU_student::MSU_student(school_type school, float average_grade) {
+MSU_student::MSU_student(school_type school,
+    double average_grade,
+    day day_off,
+    double income
+    ) {
     this->school = school;
     this->average_grade = average_grade;
+    this->day_off = day_off;
+    this->income = income;
 }
 
 
-const school_type MSU_student::get_student_school() {
+school_type MSU_student::get_school() const {
     return school;
 }
 
 
-const float MSU_student::get_average_grade() {
+double MSU_student::get_average_grade() const {
     return average_grade;
 }
 
@@ -134,28 +176,55 @@ void MSU_student::rise_scholarship(unsigned int addition) {
 }
 
 
-float MSU_student::get_scholarship() {
+double MSU_student::get_scholarship() {
     return scholarship;
 }
 
 
-void MSU_student::set_current_day(int new_current_day_index) {
-    current_day = get_day_of_the_week(new_current_day_index);
+void MSU_student::set_current_day(int new__day_index) {
+    current_day = get_day(new__day_index);
 }
 
 
-day_of_the_week_type MSU_student::get_current_day() {
+day MSU_student::get_current_day() {
     return current_day;
 }
 
 
-void MSU_student::change_school(int school_index) {
-    this->school = get_school(school_index);
+void MSU_student::set_school(int school_index) {
+    this->school = get_school_enum(school_index);
 }
 
 
-void MSU_student::update_grades(float new_grade) {
-    this->average_grade = new_grade;
+void MSU_student::study() {
+    if (average_grade < 4.9 && day_off != current_day) {
+        average_grade += 0.1;
+    }
+}
+
+
+void MSU_student::set_income(double new_income) {
+    this->income = new_income;
+}
+
+
+double MSU_student::get_income() {
+    return this->income;
+}
+
+
+void MSU_student::set_day_off(int new_day_off) {
+    this->day_off = get_day(new_day_off);
+}
+
+
+day MSU_student::get_day_off() {
+    return this->day_off;
+}
+
+
+double MSU_student::get_profit() {
+    return scholarship + income - COEFFICIENT * school;
 }
 
 
@@ -164,9 +233,11 @@ int main() {
      unsigned int scholarship_addition;
     int current_day_index;
     int school_index;
-    float average_grade;
+    double average_grade;
     int student_index;
     int students_amount;
+    int day_off_index;
+    double income;
     std::cout << "Enter students amount: ";
     std::cin >> students_amount;
     MSU_student** students = new MSU_student*[students_amount];
@@ -183,8 +254,11 @@ int main() {
                     if (students[i] == nullptr) {
                         std::cout << " None \n";
                     } else {
-                        std::cout << " School: " << students[i]->get_student_school();
-                        std::cout << " Average_grade: " << students[i]->get_average_grade() << "\n";
+                        std::cout << " \n -School: " << students[i]->get_school() << "\n";
+                        std::cout << " -Average_grade: " << students[i]->get_average_grade() << "\n";
+                        std::cout << " -Day off: " << students[i]->get_day_off() << "\n";
+                        std::cout << " -Income: " << students[i]->get_income() << "\n";
+                        std::cout << " -Profit: " << students[i]->get_profit() << "\n";
                     }
                 }
                 std::cout << "Scholarship: " << MSU_student::get_scholarship() << " rubles. \n";
@@ -198,9 +272,22 @@ int main() {
                 } else {
                     std::cout << "Enter school index: ";
                     std::cin >> school_index;
+
                     std::cout << "Enter average grade: ";
                     std::cin >> average_grade;
-                    students[student_index] = new MSU_student(get_school(school_index), average_grade);
+
+                    std::cout << "Enter day off: ";
+                    std::cin >> day_off_index;
+
+                    std::cout << "Enter income: ";
+                    std::cin >> income;
+
+                    students[student_index] = new MSU_student(
+                        get_school_enum(school_index),
+                        average_grade,
+                        get_day(day_off_index),
+                        income
+                        );
                     std::cout << "Student added. \n";
                 }
                 break;
@@ -224,7 +311,7 @@ int main() {
                 } else {
                     std::cout << "Enter school index: ";
                     std::cin >> school_index;
-                    students[student_index]->change_school(school_index);
+                    students[student_index]->set_school(school_index);
                     std::cout << "School changed. \n";
                 }
                 break;
@@ -234,10 +321,32 @@ int main() {
                 if (students[student_index] == nullptr) {
                     std::cout << "Error: student doesn't exist. \n";
                 } else {
-                    std::cout << "Enter average grade: ";
-                    std::cin >> average_grade;
-                    students[student_index]->update_grades(average_grade);
-                    std::cout << "Grades updated. \n";
+                    std::cout << "Enter day off index: ";
+                    std::cin >> day_off_index;
+                    students[student_index]->set_day_off(day_off_index);
+                    std::cout << "Day off changed. \n";
+                }
+                break;
+            case 7:
+                std::cout << "Enter student index: ";
+                std::cin >> student_index;
+                if (students[student_index] == nullptr) {
+                    std::cout << "Error: student doesn't exist. \n";
+                } else {
+                    std::cout << "Enter income: ";
+                    std::cin >> income;
+                    students[student_index]->set_income(income);
+                    std::cout << "Income changed. \n";
+                }
+                break;
+            case 8:
+                std::cout << "Enter student index: ";
+                std::cin >> student_index;
+                if (students[student_index] == nullptr) {
+                    std::cout << "Error: student doesn't exist. \n";
+                } else {
+                    students[student_index]->study();
+                    std::cout << "Student studied. \n";
                 }
                 break;
             default:

@@ -43,7 +43,14 @@ void Angle::set_radians(double rad) {
 }
 
 
-Angle Angle::operator+(Angle angle) const{
+Angle Angle::operator=(double deg) {
+    this->degree = deg;
+    this->radians = deg / 180 * PI;
+    return *this;
+}
+
+
+Angle Angle::operator+(Angle angle) const {
     return Angle(degree + angle.degree);
 }
 

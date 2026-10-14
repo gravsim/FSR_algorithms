@@ -15,6 +15,7 @@ public:
     void set_degree(double deg);
     void set_radians(double rad);
 
+    Angle operator=(double degree);
     Angle operator+(Angle angle) const;
     Angle operator-(Angle angle) const;
     Angle operator*(double coefficient) const;
