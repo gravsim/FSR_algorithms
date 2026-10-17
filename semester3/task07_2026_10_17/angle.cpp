@@ -5,11 +5,6 @@
 #define PRECISION 1e-15
 
 
-bool double_equal(double a, double b) {
-    return fabs(a - b) <= PRECISION;
-}
-
-
 Angle::Angle() {
     this->degree = 0;
     this->radians = 0;
@@ -22,6 +17,26 @@ Angle::Angle(double degree) {
 }
 
 
+Angle::Angle(double value, int type) {
+    switch (type) {
+        case 1:
+            this->degree = value / PI * 180;
+            this->radians = value;
+            break;
+        default:
+            this->degree = value;
+            this->radians = value / 180 * PI;
+            break;
+    }
+}
+
+
+Angle::Angle(Vec2& vec) {
+    this->radians = acos(vec.get_x() / sqrt(vec.get_x() * vec.get_x() + vec.get_y() * vec.get_y()));
+    this->degree = this->radians / PI * 180;
+}
+
+
 double Angle::get_degree() const{
     return degree;
 }
@@ -29,6 +44,16 @@ double Angle::get_degree() const{
 
 double Angle::get_radians() const{
     return radians;
+}
+
+
+double Angle::get_cos() const {
+    return cos(radians);
+}
+
+
+double Angle::get_sin() const {
+    return sin(radians);
 }
 
 
@@ -44,6 +69,12 @@ void Angle::set_radians(double rad) {
 }
 
 
+Vec2 Angle::to_vec2() const {
+    return Vec2(get_cos(), get_sin());
+}
+
+
+
 Angle Angle::operator=(double deg) {
     this->degree = deg;
     this->radians = deg / 180 * PI;
@@ -51,12 +82,12 @@ Angle Angle::operator=(double deg) {
 }
 
 
-Angle Angle::operator+(Angle angle) const {
+Angle Angle::operator+(Angle& angle) const {
     return Angle(degree + angle.degree);
 }
 
 
-Angle Angle::operator-(Angle angle) const {
+Angle Angle::operator-(Angle& angle) const {
     return Angle(degree - angle.degree);
 }
 
@@ -71,14 +102,14 @@ Angle Angle::operator/(double coefficient) const {
 }
 
 
-const Angle Angle::operator+=(Angle angle) {
+const Angle Angle::operator+=(Angle& angle) {
     degree += angle.degree;
     radians += angle.radians;
     return *this;
 }
 
 
-const Angle Angle::operator-=(Angle angle) {
+const Angle Angle::operator-=(Angle& angle) {
     degree -= angle.degree;
     radians -= angle.radians;
     return *this;
@@ -99,27 +130,27 @@ const Angle Angle::operator/=(double coefficient) {
 }
 
 
-bool Angle::operator==(Angle angle) const {
+bool Angle::operator==(Angle& angle) const {
     return double_equal(degree, angle.degree);
 }
 
 
-bool Angle::operator<=(Angle angle) const {
+bool Angle::operator<=(Angle& angle) const {
     return degree <= angle.degree - PRECISION;
 }
 
 
-bool Angle::operator>=(Angle angle) const {
+bool Angle::operator>=(Angle& angle) const {
     return degree >= angle.degree + PRECISION;
 }
 
 
-bool Angle::operator<(Angle angle) const {
+bool Angle::operator<(Angle& angle) const {
     return degree < angle.degree - PRECISION;
 }
 
 
-bool Angle::operator>(Angle angle) const {
+bool Angle::operator>(Angle& angle) const {
     return degree > angle.degree + PRECISION;
 }
 
@@ -159,6 +190,11 @@ Angle::operator double() const {
 
 Angle::operator int() const {
     return (int)degree;
+}
+
+
+Angle::operator Vec2() const {
+    return to_vec2();
 }
 
 
