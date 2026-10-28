@@ -48,7 +48,7 @@ Vec2::Vec2(Angle& angle) {
 }
 
 
-Vec2::Vec2(double length, Angle& angle) {
+Vec2::Vec2(double length, Angle angle) {
     this->x = length * angle.get_cos();
     this->y = length * angle.get_sin();
 }
@@ -115,12 +115,12 @@ Vec2 Vec2::operator-() const {
 }
 
 
-Vec2 Vec2::operator*(double& coefficient) const {
+Vec2 Vec2::operator*(double coefficient) const {
     return Vec2(x * coefficient, y * coefficient);
 }
 
 
-Vec2 Vec2::operator/(double& coefficient) const {
+Vec2 Vec2::operator/(double coefficient) const {
     return Vec2(x / coefficient, y / coefficient);
 }
 
@@ -279,7 +279,7 @@ Vec2 Vec2::normalized() const {
 }
 
 Angle Vec2::to_angle() const {
-    double radians = acos(get_x() / sqrt(get_x() * get_x() + get_y() * get_y()));
+    double radians = atan2(get_y(), get_x());
     return Angle(radians, 1);
 }
 

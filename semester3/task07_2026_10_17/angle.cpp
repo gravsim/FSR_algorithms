@@ -32,7 +32,7 @@ Angle::Angle(double value, int type) {
 
 
 Angle::Angle(Vec2& vec) {
-    this->radians = acos(vec.get_x() / sqrt(vec.get_x() * vec.get_x() + vec.get_y() * vec.get_y()));
+    this->radians = atan2(vec.get_y(), vec.get_x());
     this->degree = this->radians / PI * 180;
 }
 
@@ -102,28 +102,28 @@ Angle Angle::operator/(double coefficient) const {
 }
 
 
-const Angle Angle::operator+=(Angle& angle) {
+Angle& Angle::operator+=(Angle& angle) {
     degree += angle.degree;
     radians += angle.radians;
     return *this;
 }
 
 
-const Angle Angle::operator-=(Angle& angle) {
+Angle& Angle::operator-=(Angle& angle) {
     degree -= angle.degree;
     radians -= angle.radians;
     return *this;
 }
 
 
-const Angle Angle::operator*=(double coefficient) {
+Angle& Angle::operator*=(double coefficient) {
     degree *= coefficient;
     radians *= coefficient;
     return *this;
 }
 
 
-const Angle Angle::operator/=(double coefficient) {
+Angle& Angle::operator/=(double coefficient) {
     degree /= coefficient;
     radians /= coefficient;
     return *this;
@@ -155,28 +155,28 @@ bool Angle::operator>(Angle& angle) const {
 }
 
 
-const Angle Angle::operator++() {
+Angle& Angle::operator++() {
     degree++;
     radians += PI / 180;
     return *this;
 }
 
 
-const Angle Angle::operator++(int) {
+Angle& Angle::operator++(int) {
     degree++;
     radians += PI / 180;
     return *this;
 }
 
 
-const Angle Angle::operator--() {
+Angle& Angle::operator--() {
     degree--;
     radians -= PI / 180;
     return *this;
 }
 
 
-const Angle Angle::operator--(int) {
+Angle& Angle::operator--(int) {
     degree--;
     radians -= PI / 180;
     return *this;
@@ -199,7 +199,7 @@ Angle::operator Vec2() const {
 
 
 std::ostream& operator<<(std::ostream& out, Angle& angle) {
-    out << "Degree: " << angle.degree << " Radians: " << angle.radians << "\n";
+    out << "Degree: " << angle.degree << " Radians: " << angle.radians;
     return out;
 }
 

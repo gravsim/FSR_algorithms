@@ -32,19 +32,19 @@ public:
     Angle operator-(Angle& angle) const;
     Angle operator*(double coefficient) const;
     Angle operator/(double coefficient) const;
-    const Angle operator+=(Angle& angle);
-    const Angle operator-=(Angle& angle);
-    const Angle operator*=(double coefficient);
-    const Angle operator/=(double coefficient);
+    Angle& operator+=(Angle& angle);
+    Angle& operator-=(Angle& angle);
+    Angle& operator*=(double coefficient);
+    Angle& operator/=(double coefficient);
     bool operator==(Angle& angle) const;
     bool operator<=(Angle& angle) const;
     bool operator>=(Angle& angle) const;
     bool operator<(Angle& angle) const;
     bool operator>(Angle& angle) const;
-    const Angle operator++();
-    const Angle operator++(int);
-    const Angle operator--();
-    const Angle operator--(int);
+    Angle& operator++();
+    Angle& operator++(int);
+    Angle& operator--();
+    Angle& operator--(int);
     friend std::ostream& operator<<(std::ostream& out, Angle& angle);
     friend std::istream& operator>>(std::istream& in, Angle& angle);
 

@@ -19,7 +19,7 @@ public:
     Vec2();
     Vec2(double x, double y);
     Vec2(Angle& angle);
-    Vec2(double length, Angle& angle);
+    Vec2(double length, Angle angle);
     double get_x() const;
     double get_y() const;
     double get_norm() const;
@@ -34,8 +34,8 @@ public:
     Vec2 operator-(const Vec2& vec) const;
     Vec2 operator-(const Angle& angle) const;
     Vec2 operator-() const;
-    Vec2 operator*(double& coefficient) const;
-    Vec2 operator/(double& coefficient) const;
+    Vec2 operator*(double coefficient) const;
+    Vec2 operator/(double coefficient) const;
 
     Vec2 operator+=(const Vec2& vec);
     Vec2 operator+=(const Angle& angle);
