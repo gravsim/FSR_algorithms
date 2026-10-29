@@ -32,14 +32,14 @@ public:
     Vec2 operator*(double coefficient) const;
     Vec2 operator/(double coefficient) const;
 
-    Vec2 operator+=(const Vec2& vec);
-    Vec2 operator-=(const Vec2& vec);
-    Vec2 operator*=(double& coefficient);
-    Vec2 operator/=(double& coefficient);
-    Vec2 operator++();
-    Vec2 operator++(int);
-    Vec2 operator--();
-    Vec2 operator--(int);
+    Vec2& operator+=(const Vec2& vec);
+    Vec2& operator-=(const Vec2& vec);
+    Vec2& operator*=(double coefficient);
+    Vec2& operator/=(double coefficient);
+    Vec2& operator++();
+    Vec2& operator++(int);
+    Vec2& operator--();
+    Vec2& operator--(int);
     bool operator==(const Vec2& vec) const;
     bool operator<=(const Vec2& vec) const;
     bool operator>=(const Vec2& vec) const;
@@ -50,8 +50,8 @@ public:
 
     friend double cross2(const Vec2& a, const Vec2& b);
     friend double dot(const Vec2& a, const Vec2& b);
-    operator double() const;
-    operator int() const;
+    explicit operator double() const;
+    explicit operator int() const;
 };
 
 #endif

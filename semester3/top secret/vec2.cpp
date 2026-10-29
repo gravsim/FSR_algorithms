@@ -93,61 +93,66 @@ Vec2 Vec2::operator*(double coefficient) const {
 }
 
 
+Vec2 operator*(double coefficient, Vec2 vec) {
+    return vec * coefficient;
+}
+
+
 Vec2 Vec2::operator/(double coefficient) const {
     return Vec2(x / coefficient, y / coefficient);
 }
 
 
-Vec2 Vec2::operator+=(const Vec2& vec) {
+Vec2& Vec2::operator+=(const Vec2& vec) {
     x += vec.x;
     y += vec.y;
     return *this;
 }
 
 
-Vec2 Vec2::operator-=(const Vec2& vec) {
+Vec2& Vec2::operator-=(const Vec2& vec) {
     x -= vec.x;
     y -= vec.y;
     return *this;
 }
 
 
-Vec2 Vec2::operator*=(double& coefficient) {
+Vec2& Vec2::operator*=(double coefficient) {
     x *= coefficient;
     y *= coefficient;
     return *this;
 }
 
 
-Vec2 Vec2::operator/=(double& coefficient) {
+Vec2& Vec2::operator/=(double coefficient) {
     x /= coefficient;
     y /= coefficient;
     return *this;
 }
 
 
-Vec2 Vec2::operator++() {
+Vec2& Vec2::operator++() {
     x++;
     y++;
     return *this;
 }
 
 
-Vec2 Vec2::operator++(int) {
+Vec2& Vec2::operator++(int) {
     x++;
     y++;
     return *this;
 }
 
 
-Vec2 Vec2::operator--() {
+Vec2& Vec2::operator--() {
     x--;
     y--;
     return *this;
 }
 
 
-Vec2 Vec2::operator--(int) {
+Vec2& Vec2::operator--(int) {
     x--;
     y--;
     return *this;
