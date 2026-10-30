@@ -21,6 +21,7 @@ public:
     double get_x() const;
     double get_y() const;
     double get_norm() const;
+    double get_norm_squared() const;
     void set_x(double x0);
     void set_y(double y0);
     Vec2 normalized() const;
