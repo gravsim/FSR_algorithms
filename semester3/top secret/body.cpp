@@ -2,6 +2,8 @@
 #include "vec2.cpp"
 #include "body.hpp"
 #include <cmath>
+#include <fstream>
+
 
 Body::Body() {
     mass = 0;
@@ -71,4 +73,9 @@ inline Vec2 get_force(double G, Body& body1, Body& body2) {
 std::ostream& operator<<(std::ostream& out, const Body& body) {
     out << "Mass: " << body.mass << " Position: " << body.position << "Velocity: " << body.velocity;
     return out;
+}
+
+
+void Body::write_position(std::ofstream& outfile) {
+    outfile << position.get_x() << " " << position.get_y() << "\n";
 }

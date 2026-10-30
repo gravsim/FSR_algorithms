@@ -1,7 +1,6 @@
 #include "body.cpp"
 #include <fstream>
 
-
 void update_positions(int N, double timestep, Body* bodies) {
     for (int i = 0; i < N; i++) {
         bodies[i].add_position(bodies[i].get_velocity() * timestep);
@@ -27,20 +26,19 @@ void print_bodies(int N, Body* bodies) {
 }
 
 
-void write_bodies(int N, Body* bodies, std::ofstream& outfile) {
-    for (int i = 0; i < N; i++) {
-        outfile << bodies[i] << "\n";
-    }
+void write_bodies(int N, Body body, std::ofstream& outfile) {
+    outfile << body << "\n";
 }
 
 
 int main() {
     double G = 1;
     int N = 3;
-    double end_time = 5000000;
+    double end_time = 6000000;
     double write_period = 1000;
-    double timestep = 10;
+    double timestep = 0.1;
     int steps = (int)end_time / timestep;
+    int write_steps = (int)write_period / timestep;
     Body* bodies = new Body[N];
     bodies[0] = Body(6.67e-11,
         Vec2(-0.9892620043, 0),
@@ -52,16 +50,26 @@ int main() {
             Vec2(-1.2203557197, 0),
             Vec2(0, -1.721565252990506e-05));
 
-    std::ofstream outfile("results.txt", std::ios_base::app);
-    for (double time = 0; time < end_time; time += timestep) {
+    std::ofstream* outfiles = new std::ofstream[N];
+    for (int i = 0; i < N; i++) {
+        std::string name = "body" + std::to_string(i) + ".txt";
+        outfiles[i].open(name, std::ios_base::out);
+    }
+    for (int step = 0; step < steps; step ++) {
         update_velocities(N, timestep, G, bodies);
         update_positions(N, timestep, bodies);
-        if (time % write_period == 0) {
-            write_bodies(N, bodies, outfile);
+        if (step % write_steps == 0) {
+            for (int i = 0; i < N; i++) {
+                bodies[i].write_position(outfiles[i]);
+                // write_bodies(N, bodies, );
+            }
+            std::cout << "Calculation: " << (int)((double)step * 100 / (double)steps) << "%" << "\r" << std::flush;
         }
-
     }
     print_bodies(N, bodies);
-    outfile.close();
+    for (int i = 0; i < N; i++) {
+        outfiles[i].close();
+    }
     delete[] bodies;
+    delete[] outfiles;
 }

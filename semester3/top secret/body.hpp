@@ -20,4 +20,5 @@ public:
     void add_velocity(const Vec2& addition_velocity);
 
     friend std::ostream& operator<<(std::ostream& out, const Body& body);
+    void write_position(std::ofstream& outfile);
 };
