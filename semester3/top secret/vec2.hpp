@@ -14,7 +14,6 @@ class Vec2
 private:
     double x;
     double y;
-
 public:
     Vec2();
     Vec2(double x, double y);
