@@ -2,7 +2,93 @@
 #include <iomanip>
 #include <fstream>
 
-double Legendre(double x, int n) {
+
+class Legendre_exception: public std::exception {
+private:
+    const char* message;
+public:
+    Legendre_exception();
+    const char* what() const noexcept override;
+};
+
+Legendre_exception::Legendre_exception() {
+    message = "Error";
+}
+
+
+const char *Legendre_exception::what() const noexcept {
+    return message;
+}
+
+
+
+class n_exception: public Legendre_exception {
+private:
+    double n;
+public:
+    n_exception(double n);
+    double get_n() const;
+};
+
+
+n_exception::n_exception(double n) {
+    this->n = n;
+}
+
+
+double n_exception::get_n() const {
+    return n;
+}
+
+class Negative_n_exception: public n_exception {
+private:
+    const char* message;
+    double n;
+public:
+    Negative_n_exception(double n);
+    const char* what() const noexcept override;
+};
+
+
+Negative_n_exception::Negative_n_exception(double n): n_exception(n) {
+    this->n = n;
+    message = "n must be an positive or 0";
+}
+
+
+const char *Negative_n_exception::what() const noexcept {
+    return message;
+}
+
+
+class Non_int_n_exception: public n_exception {
+private:
+    const char* message;
+    double n;
+public:
+    Non_int_n_exception(double n);
+    const char* what() const noexcept override;
+};
+
+
+Non_int_n_exception::Non_int_n_exception(double n): n_exception(n) {
+    this->n = n;
+    message = "n must be an integer";
+}
+
+
+const char *Non_int_n_exception::what() const noexcept {
+    return message;
+}
+
+
+double Legendre(double x, double n) {
+    if (n < 0) {
+        throw Negative_n_exception(n);
+    }
+    if (static_cast<double>(static_cast<int>(n)) != n) {
+        throw Non_int_n_exception(n);
+    }
     if (n == 0) {
         return 1;
     }
@@ -20,21 +106,26 @@ double Legendre(double x, int n) {
         }
         return Pn2;
     }
-    if (n < 1) {
-        return -1;
-    }
     return -1;
 }
 
 
 int main() {
-    int n;
+    double n;
     double x;
     std::ifstream input("input.txt");
     input >> x >> n;
     std::ofstream output;
     output.open("output.txt", std::ios_base::out);
-    output << "Legendre(x=" << x << ", n=" << n << ") = " << Legendre(x, n);
+    try {
+        output << "Legendre(x=" << x << ", n=" << n << ") = " << Legendre(x, n);
+    }
+    catch (const Negative_n_exception& err) {
+        std::cout << "Exception: " << err.what() << "\n";
+    }
+    catch (const Non_int_n_exception& err) {
+        std::cout << "Exception: " << err.what() << "\n";
+    }
     std::cout << "Program finished.";
     return 0;
 }
