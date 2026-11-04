@@ -4,15 +4,15 @@
 
 
 class Legendre_exception: public std::exception {
-private:
+protected:
     const char* message;
 public:
     Legendre_exception();
     const char* what() const noexcept override;
 };
 
-Legendre_exception::Legendre_exception() {
-    message = "Error";
+
+Legendre_exception::Legendre_exception(): message("Error") {
 }
 
 
@@ -21,9 +21,8 @@ const char *Legendre_exception::what() const noexcept {
 }
 
 
-
 class n_exception: public Legendre_exception {
-private:
+protected:
     double n;
 public:
     n_exception(double n);
@@ -40,10 +39,8 @@ double n_exception::get_n() const {
     return n;
 }
 
+
 class Negative_n_exception: public n_exception {
-private:
-    const char* message;
-    double n;
 public:
     Negative_n_exception(double n);
     const char* what() const noexcept override;
@@ -62,9 +59,6 @@ const char *Negative_n_exception::what() const noexcept {
 
 
 class Non_int_n_exception: public n_exception {
-private:
-    const char* message;
-    double n;
 public:
     Non_int_n_exception(double n);
     const char* what() const noexcept override;
@@ -99,14 +93,15 @@ double Legendre(double x, double n) {
         double Pn0 = 1;
         double Pn1 = x;
         double Pn2 = Pn1;
-        for (int i = 2; i <= n; i++) {
+        int deg = static_cast<int>(n);
+        for (int i = 2; i <= deg; i++) {
             Pn2 = 1.0 / i  * ((2 * i - 1) * x * Pn1 - (i - 1) * Pn0);
             Pn0 = Pn1;
             Pn1 = Pn2;
         }
         return Pn2;
     }
-    return -1;
+    return 0;
 }
 
 
