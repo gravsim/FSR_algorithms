@@ -3,22 +3,24 @@
 
 class Weapon {
 protected:
+    
+public:
+    Weapon();
+    virtual ~Weapon() = default;
+    virtual void shoot();
+};
+
+
+class AK_47: public Weapon {
+protected:
     int ammo;
     int max_ammo;
     double reload_time;
     double cd_time;
 public:
-    Weapon(int ammo, int max_ammo, double reload_time, double cd_time);
-    virtual ~Weapon() = default;
-    virtual void shoot();
-    void reload();
-};
-
-
-class AK_47: public Weapon {
-public:
-    AK_47(int ammo, int max_ammo, double reload_time, double cd_time): Weapon(ammo, max_ammo, reload_time, cd_time) {}
-
+    AK_47(int ammo, int max_ammo, double reload_time, double cd_time);
+    void reload(int ammo_addition);
+    void shoot() override;
 };
 
 
@@ -35,7 +37,8 @@ public:
         int grenade_launcher_ammo,
         int grenade_launcher_max_ammo): AK_47(ammo, max_ammo, reload_time, cd_time) {
     }
-    void shoot_grenade_launcher();
+    void launch_grenade();
+    void reload_grenade_launcher(int ammo_addition);
 };
 
 
@@ -46,9 +49,10 @@ public:
     Gravity_gun(int ammo,
         int max_ammo,
         double reload_time,
-        double cd_time): Weapon(ammo, max_ammo, reload_time, cd_time) {}
+        double cd_time): Weapon() {}
     void drag_in();
 };
+
 
 class Charged_gravity_gun: Gravity_gun {
 protected:
@@ -58,5 +62,5 @@ public:
         int max_ammo,
         double reload_time,
         double cd_time): Gravity_gun(ammo, max_ammo, reload_time, cd_time) {}
-    void drag_in();
+    void drag_in_biomass();
 };
