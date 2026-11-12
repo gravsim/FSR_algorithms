@@ -49,3 +49,14 @@ public:
         double cd_time): Weapon(ammo, max_ammo, reload_time, cd_time) {}
     void drag_in();
 };
+
+class Charged_gravity_gun: Gravity_gun {
+protected:
+
+public:
+    Charged_gravity_gun(int ammo,
+        int max_ammo,
+        double reload_time,
+        double cd_time): Gravity_gun(ammo, max_ammo, reload_time, cd_time) {}
+    void drag_in();
+};
