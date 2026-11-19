@@ -19,7 +19,8 @@ protected:
     double cd_time;
 public:
     AK_47(int ammo, int max_ammo, double reload_time, double cd_time);
-    void reload(int ammo_addition);
+    ~AK_47() = default;
+    void reload();
     void shoot() override;
 };
 
@@ -27,40 +28,44 @@ public:
 
 class AK_47_grenade: public AK_47 {
 protected:
-    int grenade_launcher_ammo;
-    int grenade_launcher_max_ammo;
+    int grenade_ammo;
+    int grenade_max_ammo;
 public:
     AK_47_grenade(int ammo,
         int max_ammo,
         double reload_time,
         double cd_time,
-        int grenade_launcher_ammo,
-        int grenade_launcher_max_ammo): AK_47(ammo, max_ammo, reload_time, cd_time) {
+        int grenade_ammo,
+        int grenade_max_ammo): AK_47(ammo, max_ammo, reload_time, cd_time) {
     }
+    ~AK_47_grenade() = default;
     void launch_grenade();
     void reload_grenade_launcher(int ammo_addition);
+    void shoot() override;
 };
 
 
-class Gravity_gun: Weapon {
+class Gravity_gun: public Weapon {
 protected:
-
+    int battery;
+    int max_battery;
+    char* dragged_object;
 public:
-    Gravity_gun(int ammo,
-        int max_ammo,
-        double reload_time,
-        double cd_time): Weapon() {}
-    void drag_in();
+    Gravity_gun(int battery, int max_battery): Weapon() {}
+    ~Gravity_gun() = default;
+    int get_battery() const;
+    int get_max_battery() const;
+    char* get_dragged_object();
+    void charge(int battery_addition);
+    void drag_in(char* object);
+    void shoot() override;
 };
 
 
-class Charged_gravity_gun: Gravity_gun {
-protected:
-
+class Charged_gravity_gun: public Gravity_gun {
 public:
-    Charged_gravity_gun(int ammo,
-        int max_ammo,
-        double reload_time,
-        double cd_time): Gravity_gun(ammo, max_ammo, reload_time, cd_time) {}
-    void drag_in_biomass();
+    Charged_gravity_gun(int battery, int max_battery): Gravity_gun(battery, max_battery) {};
+    Charged_gravity_gun(Gravity_gun& gravity_gun): Gravity_gun(4 * gravity_gun.get_max_battery(), 4 * gravity_gun.get_max_battery()) {};
+    ~Charged_gravity_gun() = default;
+    void shoot() override;
 };
