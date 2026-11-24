@@ -1,5 +1,4 @@
 #include "vec2.hpp"
-#include "angle.hpp"
 #include <cmath>
 #define PI 3.1415926535897932
 #define PRECISION 1e-15
@@ -42,18 +41,6 @@ Vec2::Vec2(double x, double y) {
 }
 
 
-Vec2::Vec2(Angle& angle) {
-    this->x = angle.get_cos();
-    this->y = angle.get_sin();
-}
-
-
-Vec2::Vec2(double length, Angle angle) {
-    this->x = length * angle.get_cos();
-    this->y = length * angle.get_sin();
-}
-
-
 double Vec2::get_x() const {
     return x;
 }
@@ -66,6 +53,11 @@ double Vec2::get_y() const {
 
 double Vec2::get_norm() const {
     return sqrt(x * x + y * y);
+}
+
+
+double Vec2::get_norm_squared() const {
+    return x * x + y * y;
 }
 
 
@@ -91,22 +83,8 @@ Vec2 Vec2::operator+(const Vec2& vec) const {
 }
 
 
-Vec2 Vec2::operator+(const Angle& angle) const {
-    double new_x = x * angle.get_cos() - y * angle.get_sin();
-    double new_y = x * angle.get_sin() + y * angle.get_cos();
-    return Vec2(new_x, new_y);
-}
-
-
 Vec2 Vec2::operator-(const Vec2& vec) const {
     return Vec2(x - vec.x, y - vec.y);
-}
-
-
-Vec2 Vec2::operator-(const Angle& angle) const {
-    double new_x = x * angle.get_cos() + y * angle.get_sin();
-    double new_y = -x * angle.get_sin() + y * angle.get_cos();
-    return Vec2(new_x, new_y);
 }
 
 
@@ -120,81 +98,40 @@ Vec2 Vec2::operator*(double coefficient) const {
 }
 
 
+Vec2 operator*(double coefficient, const Vec2& vec) {
+    return vec * coefficient;
+}
+
+
 Vec2 Vec2::operator/(double coefficient) const {
     return Vec2(x / coefficient, y / coefficient);
 }
 
 
-Vec2 Vec2::operator+=(const Vec2& vec) {
+Vec2& Vec2::operator+=(const Vec2& vec) {
     x += vec.x;
     y += vec.y;
     return *this;
 }
 
 
-Vec2 Vec2::operator+=(const Angle& angle) {
-    double new_x = x * angle.get_cos() - y * angle.get_sin();
-    double new_y = x * angle.get_sin() + y * angle.get_cos();
-    x = new_x;
-    y = new_y;
-    return *this;
-}
-
-
-Vec2 Vec2::operator-=(const Vec2& vec) {
+Vec2& Vec2::operator-=(const Vec2& vec) {
     x -= vec.x;
     y -= vec.y;
     return *this;
 }
 
 
-Vec2 Vec2::operator-=(const Angle& angle) {
-    double new_x = x * angle.get_cos() + y * angle.get_sin();
-    double new_y = -x * angle.get_sin() + y * angle.get_cos();
-    x = new_x;
-    y = new_y;
-    return *this;
-}
-
-
-Vec2 Vec2::operator*=(double& coefficient) {
+Vec2& Vec2::operator*=(double coefficient) {
     x *= coefficient;
     y *= coefficient;
     return *this;
 }
 
 
-Vec2 Vec2::operator/=(double& coefficient) {
+Vec2& Vec2::operator/=(double coefficient) {
     x /= coefficient;
     y /= coefficient;
-    return *this;
-}
-
-
-Vec2 Vec2::operator++() {
-    x++;
-    y++;
-    return *this;
-}
-
-
-Vec2 Vec2::operator++(int) {
-    x++;
-    y++;
-    return *this;
-}
-
-
-Vec2 Vec2::operator--() {
-    x--;
-    y--;
-    return *this;
-}
-
-
-Vec2 Vec2::operator--(int) {
-    x--;
-    y--;
     return *this;
 }
 
@@ -258,11 +195,6 @@ Vec2::operator int() const {
 }
 
 
-Vec2::operator Angle() const {
-    return to_angle();
-}
-
-
 std::ostream& operator<<(std::ostream& out, const Vec2& vec) {
     out << "(" << vec.x << ", " << vec.y << ") ";
     return out;
@@ -278,13 +210,8 @@ Vec2 Vec2::normalized() const {
     return Vec2(x / this->get_norm(), y / this->get_norm());
 }
 
-Angle Vec2::to_angle() const {
-    double radians = atan2(get_y(), get_x());
-    return Angle(radians, 1);
-}
 
-
-double distance(Vec2& a, Vec2& b) {
+double distance(const Vec2& a, const Vec2& b) {
     return (a - b).get_norm();
 }
 
@@ -309,9 +236,4 @@ int vectors_sign(const Vec2& point, const Vec2& start, const Vec2& end) {
 
 double cos_between(const Vec2& a, const Vec2& b) {
     return dot(a.normalized(), b.normalized());
-}
-
-
-Angle angle_between(const Vec2& a, const Vec2& b) {
-    return Angle(acos(cos_between(a, b)), 1);
 }

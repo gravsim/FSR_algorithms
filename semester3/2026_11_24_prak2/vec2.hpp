@@ -1,52 +1,33 @@
-#ifndef VEC2
-#define VEC2
+#pragma once
 #include <iostream>
-
-
-bool double_equal(double a, double b);
-
-
-class Angle;
-
 
 class Vec2
 {
 private:
     double x;
     double y;
-
 public:
     Vec2();
     Vec2(double x, double y);
-    Vec2(Angle& angle);
-    Vec2(double length, Angle angle);
     double get_x() const;
     double get_y() const;
     double get_norm() const;
+    double get_norm_squared() const;
     void set_x(double x0);
     void set_y(double y0);
     Vec2 normalized() const;
-    Angle to_angle() const;
 
     Vec2& operator=(const Vec2& vec);
     Vec2 operator+(const Vec2& vec) const;
-    Vec2 operator+(const Angle& angle) const;
     Vec2 operator-(const Vec2& vec) const;
-    Vec2 operator-(const Angle& angle) const;
     Vec2 operator-() const;
     Vec2 operator*(double coefficient) const;
     Vec2 operator/(double coefficient) const;
 
-    Vec2 operator+=(const Vec2& vec);
-    Vec2 operator+=(const Angle& angle);
-    Vec2 operator-=(const Vec2& vec);
-    Vec2 operator-=(const Angle& angle);
-    Vec2 operator*=(double& coefficient);
-    Vec2 operator/=(double& coefficient);
-    Vec2 operator++();
-    Vec2 operator++(int);
-    Vec2 operator--();
-    Vec2 operator--(int);
+    Vec2& operator+=(const Vec2& vec);
+    Vec2& operator-=(const Vec2& vec);
+    Vec2& operator*=(double coefficient);
+    Vec2& operator/=(double coefficient);
     bool operator==(const Vec2& vec) const;
     bool operator<=(const Vec2& vec) const;
     bool operator>=(const Vec2& vec) const;
@@ -57,9 +38,8 @@ public:
 
     friend double cross2(const Vec2& a, const Vec2& b);
     friend double dot(const Vec2& a, const Vec2& b);
-    operator double() const;
-    operator int() const;
-    operator Angle() const;
+    explicit operator double() const;
+    explicit operator int() const;
 };
 
-#endif
+Vec2 operator*(double coefficient, const Vec2& vec);
