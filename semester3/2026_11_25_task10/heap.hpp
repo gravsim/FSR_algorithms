@@ -1,6 +1,9 @@
+#pragma once
 #include <iostream>
+#include "pair.cpp"
 
-template <class T>
+
+template <class Key, class Value>
 class Heap {
 private:
     void expand();
@@ -10,17 +13,22 @@ private:
 protected:
     int size;
     int capacity;
-    T* values;
+    Pair<Key, Value>* pairs;
 public:
-    Heap(int capacity);
+    explicit Heap(int capacity);
     ~Heap();
     bool is_full() const;
     bool is_empty() const;
 
-    void push(T value);
-    int find_value(T value);
-    void change(T old_value, T new_value);
-    T get_minimum();
-    T pop_minimum();
-    void print_heap();
+    void push(Key key, Value value);
+    int find_value(Value value);
+    void change(Value old_value, Value new_value);
+    Value get_minimum();
+    Value pop_minimum();
+    friend std::ostream& operator<<(std::ostream& out, const Heap<Key, Value>& heap) {
+        for (int i = 0; i < heap.size; i++) {
+            out << heap.pairs[i] << " ";
+        }
+        return out;
+    }
 };

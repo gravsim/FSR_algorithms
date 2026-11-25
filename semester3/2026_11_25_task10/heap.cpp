@@ -1,69 +1,68 @@
-#include <iostream>
 #include "heap.hpp"
 
 
-template <class T>
-Heap<T>::Heap(int capacity) {
+template <class Key, class Value>
+Heap<Key, Value>::Heap(int capacity) {
     this->size = 0;
     this->capacity = capacity;
-    this->values = new T[capacity];
+    this->pairs = new Pair<Key, Value>[capacity];
 }
 
 
-template <class T>
-Heap<T>::~Heap() {
-    delete values;
+template <class Key, class Value>
+Heap<Key, Value>::~Heap() {
+    delete[] pairs;
 }
 
 
-template <class T>
-void Heap<T>::swap(int index1, int index2) {
-    T tmp = values[index1];
-    values[index1] = values[index2];
-    values[index2] = tmp;
+template <class Key, class Value>
+void Heap<Key, Value>::swap(int index1, int index2) {
+    Pair<Key, Value> tmp = pairs[index1];
+    pairs[index1] = pairs[index2];
+    pairs[index2] = tmp;
 }
 
 
-template <class T>
-bool Heap<T>::is_full() const {
+template <class Key, class Value>
+bool Heap<Key, Value>::is_full() const {
     return size == capacity;
 }
 
 
-template <class T>
-bool Heap<T>::is_empty() const {
+template <class Key, class Value>
+bool Heap<Key, Value>::is_empty() const {
     return size == 0;
 }
 
 
-template <class T>
-void Heap<T>::expand() {
-    T* new_values = new T[capacity * 2];
+template <class Key, class Value>
+void Heap<Key, Value>::expand() {
+    Pair<Key, Value>* new_pairs = new Pair<Key, Value>[capacity * 2];
     for (int i = 0; i < capacity; i++) {
-        new_values[i] = new_values;
+        new_pairs[i] = pairs[i];
     }
-    delete values;
+    delete[] pairs;
     capacity *= 2;
-    values = new_values;
+    pairs = new_pairs;
 }
 
 
-template <class T>
-void Heap<T>::sift_up(int index) {
-    while (index > 0 && values[index] < values[(index - 1) / 2]) {
+template <class Key, class Value>
+void Heap<Key, Value>::sift_up(int index) {
+    while (index > 0 && pairs[index].get_key() < pairs[(index - 1) / 2].get_key()) {
         swap(index, (index - 1) / 2);
         index = (index - 1) / 2;
     }
 }
 
 
-template <class T>
-void Heap<T>::sift_down(int index) {
+template <class Key, class Value>
+void Heap<Key, Value>::sift_down(int index) {
     int max_index = index;
-    if (2 * index + 1 < size && values[2 * index + 1] < values[index]) {
+    if (2 * index + 1 < size && pairs[2 * index + 1].get_key() < pairs[index].get_key()) {
         max_index = 2 * index + 1;
     }
-    if (2 * index + 2 < size && values[2 * index + 2] < values[max_index]) {
+    if (2 * index + 2 < size && pairs[2 * index + 2].get_key() < pairs[max_index].get_key()) {
         max_index = 2 * index + 2;
     }
     if (max_index != index) {
@@ -73,32 +72,33 @@ void Heap<T>::sift_down(int index) {
 }
 
 
-template <class T>
-void Heap<T>::push(T value) {
+template <class Key, class Value>
+void Heap<Key, Value>::push(Key key, Value value) {
     if (is_full()) {
         expand();
     }
-    values[size] = value;
+    Pair<Key, Value> pair = Pair<Key, Value>(key, value);
+    pairs[size] = pair;
     sift_up(size);
     size++;
 }
 
 
-template <class T>
-int Heap<T>::find_value(T value) {
+template <class Key, class Value>
+int Heap<Key, Value>::find_value(Value value) {
     int i = 0;
-    while (i < size && values[i] != value) {
+    while (i < size && pairs[i].get_value() != value) {
         i++;
     }
     return i;
 }
 
 
-template <class T>
-void Heap<T>::change(T old_value, T new_value) {
+template <class Key, class Value>
+void Heap<Key, Value>::change(Value old_value, Value new_value) {
     int index = find_value(old_value);
-    values[index] = new_value;
-    if (new_value > old_value) {
+    pairs[index] = new_value;
+    if (new_value < old_value) {
         sift_up(index);
     } else {
         sift_down(index);
@@ -106,24 +106,16 @@ void Heap<T>::change(T old_value, T new_value) {
 }
 
 
-template <class T>
-T Heap<T>::get_minimum() {
-    return values[0];
+template <class Key, class Value>
+Value Heap<Key, Value>::get_minimum() {
+    return pairs[0].get_value();
 }
 
 
-template <class T>
-T Heap<T>::pop_minimum() {
-    int value = values[0];
-    values[0] = values[--size];
+template <class Key, class Value>
+Value Heap<Key, Value>::pop_minimum() {
+    Value value = pairs[0].get_value();
+    pairs[0] = pairs[--size];
     sift_down(0);
     return value;
-}
-
-
-template <class T>
-void Heap<T>::print_heap() {
-    for (int i = 0; i < size; i++) {
-        std::cout << values[i] << " ";
-    }
 }
