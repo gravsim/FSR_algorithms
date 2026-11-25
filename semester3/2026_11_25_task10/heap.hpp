@@ -12,7 +12,7 @@ protected:
     int capacity;
     T* values;
 public:
-    Heap(int size, int capacity);
+    Heap(int capacity);
     ~Heap();
     bool is_full() const;
     bool is_empty() const;
@@ -20,6 +20,7 @@ public:
     void push(T value);
     int find_value(T value);
     void change(T old_value, T new_value);
-    T get_maximum();
-    T pop_maximum();
+    T get_minimum();
+    T pop_minimum();
+    void print_heap();
 };

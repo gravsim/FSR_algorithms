@@ -3,8 +3,8 @@
 
 
 template <class T>
-Heap<T>::Heap(int size, int capacity) {
-    this->size = size;
+Heap<T>::Heap(int capacity) {
+    this->size = 0;
     this->capacity = capacity;
     this->values = new T[capacity];
 }
@@ -50,7 +50,7 @@ void Heap<T>::expand() {
 
 template <class T>
 void Heap<T>::sift_up(int index) {
-    while (index > 0 && values[index] > values[(index - 1) / 2]) {
+    while (index > 0 && values[index] < values[(index - 1) / 2]) {
         swap(index, (index - 1) / 2);
         index = (index - 1) / 2;
     }
@@ -60,10 +60,10 @@ void Heap<T>::sift_up(int index) {
 template <class T>
 void Heap<T>::sift_down(int index) {
     int max_index = index;
-    if (2 * index + 1 < size && values[2 * index + 1] > values[index]) {
+    if (2 * index + 1 < size && values[2 * index + 1] < values[index]) {
         max_index = 2 * index + 1;
     }
-    if (2 * index + 2 < size && values[2 * index + 2] > values[max_index]) {
+    if (2 * index + 2 < size && values[2 * index + 2] < values[max_index]) {
         max_index = 2 * index + 2;
     }
     if (max_index != index) {
@@ -107,13 +107,13 @@ void Heap<T>::change(T old_value, T new_value) {
 
 
 template <class T>
-T Heap<T>::get_maximum() {
+T Heap<T>::get_minimum() {
     return values[0];
 }
 
 
 template <class T>
-T Heap<T>::pop_maximum() {
+T Heap<T>::pop_minimum() {
     int value = values[0];
     values[0] = values[--size];
     sift_down(0);
@@ -121,13 +121,9 @@ T Heap<T>::pop_maximum() {
 }
 
 
-int print_heap(Heap* heap) {
-    if (!heap) {
-        return -1;
+template <class T>
+void Heap<T>::print_heap() {
+    for (int i = 0; i < size; i++) {
+        std::cout << values[i] << " ";
     }
-    int i;
-    for (i = 0; i < heap->size; i++) {
-        printf("%d ", heap->values[i]);
-    }
-    return 1;
 }

@@ -1,16 +1,7 @@
 #include "vec2.hpp"
 #include <cmath>
-#define PI 3.1415926535897932
+
 #define PRECISION 1e-15
-
-
-// const fun() {}
-// means that the return parameter is const,
-// use if you return a reference or a pointer
-//
-// fun() const {}
-// means that the function is part of a class and
-// cant change any members of that class
 
 
 bool double_equal(double a, double b) {

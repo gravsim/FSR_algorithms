@@ -3,7 +3,7 @@
 
 
 int main() {
-
+    Heap<int> heap = Heap<int>(10);
 
     std::cout << "\n";
 
