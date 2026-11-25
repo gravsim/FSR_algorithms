@@ -12,6 +12,7 @@ private:
     Vec2 point3;
     double area;
 public:
+    Triangle();
     Triangle(const Vec2& point1, const Vec2& point2, const Vec2& point3);
     ~Triangle() = default;
     Vec2 get_point1() {return point1;};
@@ -25,7 +26,7 @@ public:
 class Area_comparator {
 public:
     Area_comparator() = default;
-    bool compare(Triangle tri1, Triangle tri2) {
+    static bool compare(Triangle tri1, Triangle tri2) {
         return tri1.get_area() < tri2.get_area();
     };
 };
@@ -34,7 +35,7 @@ public:
 class RL_comparator {
 public:
 RL_comparator() = default;
-    bool compare(Triangle tri1, Triangle tri2) {
+    static bool compare(Triangle tri1, Triangle tri2) {
         return tri1.get_point1().get_x() < tri2.get_point1().get_x()
         && tri1.get_point2().get_x() < tri2.get_point2().get_x()
         && tri1.get_point3().get_x() < tri2.get_point3().get_x();
@@ -45,7 +46,7 @@ RL_comparator() = default;
 template <class T>
 class Comparator {
 public:
-    bool compare(T a, T b) {
+    static bool compare(T a, T b) {
         return a < b;
     };
 };

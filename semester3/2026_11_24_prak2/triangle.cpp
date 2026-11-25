@@ -3,7 +3,15 @@
 #include "triangle.hpp"
 
 
-Triangle::Triangle(const Vec2& point1, const Vec2 point2, const Vec2& point3) {
+Triangle::Triangle() {
+    this->point1 = Vec2();
+    this->point2 = Vec2();
+    this->point3 = Vec2();
+    area = 0;
+}
+
+
+Triangle::Triangle(const Vec2& point1, const Vec2& point2, const Vec2& point3) {
     this->point1 = point1;
     this->point2 = point2;
     this->point3 = point3;
