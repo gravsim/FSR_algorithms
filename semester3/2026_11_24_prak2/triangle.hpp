@@ -19,7 +19,10 @@ public:
     Vec2 get_point2() {return point2;};
     Vec2 get_point3() {return point3;};
     void update_area();
-    double get_area();
+    double get_area() const;
+    Triangle operator*(double coefficient) const;
+    Triangle operator+(const Vec2& vec) const;
+    friend std::ostream& operator<<(std::ostream& out, const Triangle& tri);
 };
 
 
@@ -39,7 +42,7 @@ RL_comparator() = default;
         return tri1.get_point1().get_x() < tri2.get_point1().get_x()
         && tri1.get_point2().get_x() < tri2.get_point2().get_x()
         && tri1.get_point3().get_x() < tri2.get_point3().get_x();
-    };
+    }
 };
 
 

@@ -44,7 +44,7 @@ public:
         return *this;
     }
 
-    T& operator[] (int i){
+    T& operator[] (int i) const {
         return array[i];
     }
     void swap(int i, int j){
@@ -69,7 +69,7 @@ public:
 };
 
 template <class T>
-std::istream& operator>>(std::istream& is, const Container<T>& c){
+std::istream& operator>>(std::istream& is, Container<T>& c){
     for(int i = 0; i< c.get_size(); ++i){
         is >> c[i];
     }

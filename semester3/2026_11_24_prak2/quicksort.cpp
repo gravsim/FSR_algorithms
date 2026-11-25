@@ -11,10 +11,10 @@ void quick_sort(Container& c, int n, int left, int right){
     int i = left;
     int j = right;
     while (i <= j){
-        while (Comparator::compare(c[i], pivot) < 0){
+        while (Comparator::compare(c[i], pivot)){
             i++;
         }
-        while (Comparator::compare(c[j], pivot) > 0){
+        while (Comparator::compare(pivot, c[j])){
             j--;
         }
         if (i <= j){
@@ -23,6 +23,6 @@ void quick_sort(Container& c, int n, int left, int right){
             j--;
         }
     }
-    quick_sort(c, n, left, j);
-    quick_sort(c, n, i, right);
+    quick_sort<Container, Comparator>(c, n, left, j);
+    quick_sort<Container, Comparator>(c, n, i, right);
 }

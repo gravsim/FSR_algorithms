@@ -187,7 +187,7 @@ Vec2::operator int() const {
 
 
 std::ostream& operator<<(std::ostream& out, const Vec2& vec) {
-    out << "(" << vec.x << ", " << vec.y << ") ";
+    out << "(" << vec.x << ", " << vec.y << ")";
     return out;
 }
 
