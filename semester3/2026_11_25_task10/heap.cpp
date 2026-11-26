@@ -4,7 +4,11 @@
 template <class Key, class Value>
 Heap<Key, Value>::Heap(int capacity) {
     this->size = 0;
-    this->capacity = capacity;
+    if (capacity < 1) {
+        this->capacity = 1;
+    } else {
+        this->capacity = capacity;
+    }
     this->pairs = new Pair<Key, Value>[capacity];
 }
 
@@ -114,6 +118,10 @@ Value Heap<Key, Value>::get_minimum() {
 
 template <class Key, class Value>
 Value Heap<Key, Value>::pop_minimum() {
+    if (is_empty()) {
+        std::cout << "Heap is empty! ";
+        return -1;
+    }
     Value value = pairs[0].get_value();
     pairs[0] = pairs[--size];
     sift_down(0);

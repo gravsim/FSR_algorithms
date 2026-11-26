@@ -8,6 +8,11 @@ void Weapon::shoot() {
 }
 
 
+void Weapon::reload() {
+    std::cout << "Weapon reloaded.\n";
+    reload_protected();
+}
+
 
 AK_47::AK_47(int ammo, int max_ammo) {
     this->ammo = ammo;
@@ -15,11 +20,16 @@ AK_47::AK_47(int ammo, int max_ammo) {
 }
 
 
-void AK_47::reload() {
+void AK_47::reload_protected() {
     ammo = max_ammo;
-    std::cout << "Weapon reloaded.\n";
 }
 
+
+
+int AK_47::get_ammo() const {
+    std::cout << "AK_47 ammo: ";
+    return ammo;
+}
 
 
 AK_47_grenade::AK_47_grenade(int ammo,
@@ -54,6 +64,7 @@ Gravity_gun::Gravity_gun(int battery, int max_battery) {
 
 
 int Gravity_gun::get_battery() const {
+    std::cout << "gravity_gun battery: ";
     return battery;
 }
 
@@ -63,9 +74,8 @@ int Gravity_gun::get_max_battery() const {
 }
 
 
-void Gravity_gun::reload() {
+void Gravity_gun::reload_protected() {
     battery = max_battery;
-    std::cout << "Weapon reloaded.\n";
 }
 
 

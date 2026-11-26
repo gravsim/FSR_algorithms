@@ -2,10 +2,12 @@
 
 
 class Weapon {
+protected:
+    virtual void reload_protected() = 0;
 public:
     virtual ~Weapon() = default;
     void shoot();
-    virtual void reload() = 0;
+    void reload();
 };
 
 
@@ -16,7 +18,8 @@ protected:
 public:
     AK_47(int ammo, int max_ammo);
     ~AK_47() override = default;
-    void reload() override;
+    int get_ammo() const;
+    void reload_protected() override;
 };
 
 
@@ -49,7 +52,7 @@ public:
     bool is_dragged() const;
     void drag_in();
     void drop();
-    void reload() override;
+    void reload_protected() override;
 };
 
 
