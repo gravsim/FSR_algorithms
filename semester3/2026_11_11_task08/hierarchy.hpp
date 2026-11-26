@@ -47,8 +47,8 @@ public:
     int get_max_battery() const;
 
     bool is_dragged() const;
-    virtual void drag_in();
-    virtual void drop();
+    void drag_in();
+    void drop();
     void reload() override;
 };
 
@@ -58,6 +58,6 @@ public:
     Charged_gravity_gun(int battery, int max_battery);
     explicit Charged_gravity_gun(Gravity_gun& gravity_gun);
     ~Charged_gravity_gun() override = default;
-    void drag_in() override;
-    void drop() override;
+    void drag_in();
+    void drop();
 };
