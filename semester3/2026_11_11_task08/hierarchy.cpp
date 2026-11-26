@@ -2,6 +2,13 @@
 #include "hierarchy.hpp"
 
 
+
+void Weapon::shoot() {
+    std::cout << "Shot!\n";
+}
+
+
+
 AK_47::AK_47(int ammo, int max_ammo) {
     this->ammo = ammo;
     this->max_ammo = max_ammo;
@@ -13,15 +20,6 @@ void AK_47::reload() {
     std::cout << "Weapon reloaded.\n";
 }
 
-
-void AK_47::shoot() {
-    if (ammo > 0) {
-        ammo -= 1;
-        std::cout << "Shot!\n";
-    } else {
-        std::cout << "No ammo!\n";
-    }
-}
 
 
 AK_47_grenade::AK_47_grenade(int ammo,
@@ -68,16 +66,6 @@ int Gravity_gun::get_max_battery() const {
 void Gravity_gun::reload() {
     battery = max_battery;
     std::cout << "Weapon reloaded.\n";
-}
-
-
-void Gravity_gun::shoot() {
-    if (battery > 0) {
-        battery -= 1;
-        std::cout << "Shot!\n";
-    } else {
-        std::cout << "No ammo!\n";
-    }
 }
 
 

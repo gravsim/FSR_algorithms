@@ -4,7 +4,7 @@
 class Weapon {
 public:
     virtual ~Weapon() = default;
-    virtual void shoot() = 0;
+    void shoot();
     virtual void reload() = 0;
 };
 
@@ -17,7 +17,6 @@ public:
     AK_47(int ammo, int max_ammo);
     ~AK_47() override = default;
     void reload() override;
-    void shoot() override;
 };
 
 
@@ -46,7 +45,6 @@ public:
     ~Gravity_gun() override = default;
     int get_battery() const;
     int get_max_battery() const;
-    void shoot() override;
 
     bool is_dragged() const;
     virtual void drag_in();
